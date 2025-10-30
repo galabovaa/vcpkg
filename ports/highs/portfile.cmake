@@ -9,6 +9,7 @@ vcpkg_from_github(
 vcpkg_cmake_configure(
     SOURCE_PATH "${SOURCE_PATH}"
     OPTIONS
+        -DHIPO=ON
         -DFAST_BUILD=ON
         -DBUILD_TESTING=OFF
         -DBUILD_EXAMPLES=OFF
