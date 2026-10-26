@@ -31,7 +31,7 @@ endif()
 
 if(need_target)
     set(target_default "GENERIC")
-    if(MSVC)
+    if(MSVC AND NOT CMAKE_C_COMPILER_ID STREQUAL "Clang")
         # "does not support the dialect of assembly used in the cpu-specific optimized files"
         # https://github.com/OpenMathLib/OpenBLAS/wiki/How-to-use-OpenBLAS-in-Microsoft-Visual-Studio#cmake-and-visual-studio
     elseif(VCPKG_TARGET_ARCHITECTURE MATCHES "^x64|^x86")

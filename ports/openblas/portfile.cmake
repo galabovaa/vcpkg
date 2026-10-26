@@ -46,6 +46,25 @@ if(VCPKG_TARGET_IS_EMSCRIPTEN)
     )
 endif()
 
+if("clang-cl" IN_LIST FEATURES)
+    # MSVC cannot compile the inline assembly in the optimized kernels, so
+    # build with clang-cl, which is ABI-compatible with MSVC, instead.
+    vcpkg_find_acquire_program(CLANG)
+    cmake_path(GET CLANG PARENT_PATH CLANG_DIR)
+    find_program(CLANG_CL NAMES clang-cl PATHS "${CLANG_DIR}" NO_DEFAULT_PATH REQUIRED)
+    list(APPEND OPTIONS "-DCMAKE_C_COMPILER=${CLANG_CL}")
+    # Recent clang turns incompatible pointer types, which some kernels
+    # (e.g. the SKYLAKEX prefetch intrinsics) have, into errors.
+    string(APPEND VCPKG_C_FLAGS " -Wno-error=incompatible-pointer-types")
+    string(APPEND VCPKG_CXX_FLAGS "")
+    if(VCPKG_TARGET_ARCHITECTURE STREQUAL "x64")
+        list(TRANSFORM OPTIONS REPLACE "^-DDYNAMIC_ARCH=OFF$" "-DDYNAMIC_ARCH=ON")
+    elseif(VCPKG_TARGET_ARCHITECTURE STREQUAL "arm64")
+        # There is no runtime CPU detection for arm64 on Windows.
+        list(APPEND OPTIONS -DTARGET=ARMV8)
+    endif()
+endif()
+
 vcpkg_cmake_configure(
     SOURCE_PATH "${SOURCE_PATH}"
     OPTIONS

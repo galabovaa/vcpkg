@@ -1,6 +1,7 @@
 {
   "name": "openblas",
   "version": "0.3.34",
+  "port-version": 1,
   "description": "OpenBLAS is an optimized BLAS library based on GotoBLAS2 1.13 BSD version.",
   "homepage": "https://github.com/OpenMathLib/OpenBLAS",
   "license": "BSD-3-Clause",
@@ -19,6 +20,13 @@
     }
   ],
   "features": {
+    "clang-cl": {
+      "description": [
+        "Build with clang-cl on Windows MSVC triplets, enabling the optimized kernels.",
+        "MSVC can only build the generic C kernels. On x64 this also enables runtime CPU detection (DYNAMIC_ARCH)."
+      ],
+      "supports": "windows & !mingw & !uwp & (x64 | arm64)"
+    },
     "dynamic-arch": {
       "description": "Support for multiple targets in a single library",
       "supports": "!windows | mingw"
