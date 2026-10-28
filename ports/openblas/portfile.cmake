@@ -55,7 +55,7 @@ if("clang-cl" IN_LIST FEATURES)
     list(APPEND OPTIONS "-DCMAKE_C_COMPILER=${CLANG_CL}")
     # Recent clang turns incompatible pointer types, which some kernels
     # (e.g. the SKYLAKEX prefetch intrinsics) have, into errors.
-    string(APPEND VCPKG_C_FLAGS " -Wno-error=incompatible-pointer-types")
+    string(APPEND VCPKG_C_FLAGS " -Wno-error=incompatible-pointer-types -w")
     string(APPEND VCPKG_CXX_FLAGS "")
     if(VCPKG_TARGET_ARCHITECTURE STREQUAL "x64")
         list(TRANSFORM OPTIONS REPLACE "^-DDYNAMIC_ARCH=OFF$" "-DDYNAMIC_ARCH=ON")
